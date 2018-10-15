@@ -9,8 +9,9 @@ var Enemy = function (x, y) {
 
   this.x = x;
   this.y = y;
-  this.initialx = x;
-  this.initialy = y;
+  this.x0 = x;
+  this.y0 = y;
+  this.dx = 140;
 };
 
 // Update the enemy's position, required method for game
@@ -20,22 +21,24 @@ Enemy.prototype.update = function (dt) {
   // which will ensure the game runs at the same speed for
   // all computers.
 
+  this.x = this.x + (this.dx * dt);
+
+  if (this.x >= 520) {
+    this.x = this.x0;
+    this.y = this.y0;
+  }
+
+
   for (var i = 0; i < allEnemies.length; i++) {
-    allEnemies[i].dx = 160;
-  }
 
-  this.x = this.x + this.dx * dt;
-
-  if (this.x >= 500) {
-    this.reset();
-  }
-
-  if (player.x >= this.x - 40 && player.x <= this.x + 40) {
-    if (player.y >= this.y - 40 && player.y <= this.y + 40) {
-      player.x = 200;
-      player.y = 400;
+    if (player.x >= allEnemies[i].x - 50 && player.x <= allEnemies[i].x + 50) {
+      if (player.y >= allEnemies[i].y - 50 && player.y <= allEnemies[i].y + 50) {
+        player.x = 200;
+        player.y = 380;
+      }
     }
   }
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -43,10 +46,6 @@ Enemy.prototype.render = function () {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Enemy.prototype.reset = function () {
-  this.x = this.initialx;
-  this.y = this.initialy;
-};
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -69,14 +68,10 @@ Player.prototype.update = function (dt) {
   // which will ensure the game runs at the same speed for
   // all computers.
 
-  if (this.y < -18) {
-    this.reset();
+  if (this.y + 60 <= 0) {
+    this.x = 200;
+    this.y = 380;
   }
-};
-
-Player.prototype.reset = function () {
-  this.x = 200;
-  this.y = 400;
 };
 
 Player.prototype.render = function () {
@@ -84,14 +79,14 @@ Player.prototype.render = function () {
 };
 
 Player.prototype.handleInput = function (input) {
-  if (input === "up" && this.y > -50) {
-    this.y = this.y - 20;
+  if (input === "up" && this.y > -40) {
+    this.y = this.y - 40;
   } else if (input === "down" && this.y < 400) {
-    this.y = this.y + 20;
+    this.y = this.y + 40;
   } else if (input === "left" && this.x > 0) {
-    this.x = this.x - 20;
+    this.x = this.x - 40;
   } else if (input === "right" && this.x < 400) {
-    this.x = this.x + 20;
+    this.x = this.x + 40;
   }
 };
 
@@ -99,26 +94,19 @@ Player.prototype.handleInput = function (input) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var enemy1 = new Enemy(-100, 60);
-var enemy2 = new Enemy(-600, 60);
-var enemy3 = new Enemy(-165, 140);
-var enemy4 = new Enemy(-500, 140);
-var enemy5 = new Enemy(-200, 220);
-var enemy6 = new Enemy(-400, 220);
-var enemy7 = new Enemy(-300, 60);
-var enemy8 = new Enemy(-300, 140);
-var player = new Player(200, 400);
+var player = new Player(200, 380);
+var random = Math.ceil(Math.random() * 100);
 
-var allEnemies = [
-  enemy1,
-  enemy2,
-  enemy3,
-  enemy4,
-  enemy5,
-  enemy6,
-  enemy7,
-  enemy8
-];
+var e1 = new Enemy(random - 250, 220);
+var e2 = new Enemy(random - 450, 150);
+var e3 = new Enemy(random - 350, 110);
+var e4 = new Enemy(random - 150, 50);
+
+var allEnemies = [];
+
+allEnemies.push(e1, e2, e3, e4);
+
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
