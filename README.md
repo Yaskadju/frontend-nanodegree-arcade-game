@@ -7,3 +7,7 @@ For detailed instructions on how to get started, check out this [guide](https://
 1. How to run the game: After downloading the .zip file, simply open the folder and click twice on the index.html file inside the folder and the game will start.
 
 2. How to play the game: On the keyboard, the up, down, left and right keys are used to move the character in those directions. The objective of the game is to make your character to reach the water, while avoiding being caught by the insects.
+
+Alternatively, you could play the game by just accessing this page:
+
+https://yaskadju.github.io/frontend-nanodegree-arcade-game/

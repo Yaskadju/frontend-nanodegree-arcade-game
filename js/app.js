@@ -1,5 +1,6 @@
+"use strict";
 // Enemies our player must avoid
-var Enemy = function (x, y) {
+var Enemy = function(x, y) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
 
@@ -16,42 +17,39 @@ var Enemy = function (x, y) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function (dt) {
+Enemy.prototype.update = function(dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
 
-  this.x = this.x + (this.dx * dt);
+  this.x = this.x + this.dx * dt;
 
-  if (this.x >= 520) {
-    this.x = this.x0;
-    this.y = this.y0;
+  if (this.x >= 500) {
+    this.reset();
   }
 
-
-  for (let i = 0; i < allEnemies.length; i++) {
-
-    if (player.x >= allEnemies[i].x - 50 && player.x <= allEnemies[i].x + 50) {
-      if (player.y >= allEnemies[i].y - 50 && player.y <= allEnemies[i].y + 50) {
-        player.x = 200;
-        player.y = 380;
-      }
+  if (player.x >= this.x - 50 && player.x <= this.x + 50) {
+    if (player.y >= this.y - 50 && player.y <= this.y + 50) {
+      player.reset();
     }
   }
+};
 
+Enemy.prototype.reset = function() {
+  this.x = this.x0;
+  this.y = this.y0;
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function () {
+Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function (x, y) {
+var Player = function(x, y) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
 
@@ -63,7 +61,12 @@ var Player = function (x, y) {
   this.y = y;
 };
 
-Player.prototype.update = function (dt) {
+Player.prototype.reset = function() {
+  this.x = 200;
+  this.y = 380;
+};
+
+Player.prototype.update = function(dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
@@ -72,20 +75,19 @@ Player.prototype.update = function (dt) {
   // congratulations appears at the top of the screen, and the player
   // appears at the initial position again, restarting the game
   if (this.y + 60 <= 0) {
-    this.x = 200;
-    this.y = 380;
-    document.getElementById("result").innerHTML = "You Win!";
-    setTimeout(function () {
+    this.reset();
+    let result = (document.getElementById("result").innerHTML = "You Win!");
+    setTimeout(function() {
       document.getElementById("result").innerHTML = "";
     }, 1000);
   }
 };
 
-Player.prototype.render = function () {
+Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function (input) {
+Player.prototype.handleInput = function(input) {
   if (input === "up" && this.y > -40) {
     this.y = this.y - 40;
   } else if (input === "down" && this.y < 400) {
@@ -104,20 +106,16 @@ Player.prototype.handleInput = function (input) {
 let player = new Player(200, 380);
 let random = Math.ceil(Math.random() * 100);
 
-let e1 = new Enemy(random - 250, 220);
-let e2 = new Enemy(random - 450, 150);
-let e3 = new Enemy(random - 350, 110);
-let e4 = new Enemy(random - 150, 50);
-
-let allEnemies = [];
-
-allEnemies.push(e1, e2, e3, e4);
-
-
+const allEnemies = [
+  new Enemy(random - 250, 220),
+  new Enemy(random - 450, 150),
+  new Enemy(random - 350, 110),
+  new Enemy(random - 150, 50)
+];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener("keyup", function (e) {
+document.addEventListener("keyup", function(e) {
   var allowedKeys = {
     37: "left",
     38: "up",
