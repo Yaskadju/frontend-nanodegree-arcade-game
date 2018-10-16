@@ -28,8 +28,8 @@ Enemy.prototype.update = function(dt) {
     this.reset();
   }
 
-  if (player.x >= this.x - 50 && player.x <= this.x + 50) {
-    if (player.y >= this.y - 50 && player.y <= this.y + 50) {
+  if (player.x >= this.x - 40 && player.x <= this.x + 40) {
+    if (player.y >= this.y - 40 && player.y <= this.y + 40) {
       player.reset();
     }
   }
