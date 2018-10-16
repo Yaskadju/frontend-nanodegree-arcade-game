@@ -29,7 +29,7 @@ Enemy.prototype.update = function (dt) {
   }
 
 
-  for (var i = 0; i < allEnemies.length; i++) {
+  for (let i = 0; i < allEnemies.length; i++) {
 
     if (player.x >= allEnemies[i].x - 50 && player.x <= allEnemies[i].x + 50) {
       if (player.y >= allEnemies[i].y - 50 && player.y <= allEnemies[i].y + 50) {
@@ -68,9 +68,16 @@ Player.prototype.update = function (dt) {
   // which will ensure the game runs at the same speed for
   // all computers.
 
+  // When the player reaches the water, the game ends, a message of
+  // congratulations appears at the top of the screen, and the player
+  // appears at the initial position again, restarting the game
   if (this.y + 60 <= 0) {
     this.x = 200;
     this.y = 380;
+    document.getElementById("result").innerHTML = "You Win!";
+    setTimeout(function () {
+      document.getElementById("result").innerHTML = "";
+    }, 1000);
   }
 };
 
@@ -94,15 +101,15 @@ Player.prototype.handleInput = function (input) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var player = new Player(200, 380);
-var random = Math.ceil(Math.random() * 100);
+let player = new Player(200, 380);
+let random = Math.ceil(Math.random() * 100);
 
-var e1 = new Enemy(random - 250, 220);
-var e2 = new Enemy(random - 450, 150);
-var e3 = new Enemy(random - 350, 110);
-var e4 = new Enemy(random - 150, 50);
+let e1 = new Enemy(random - 250, 220);
+let e2 = new Enemy(random - 450, 150);
+let e3 = new Enemy(random - 350, 110);
+let e4 = new Enemy(random - 150, 50);
 
-var allEnemies = [];
+let allEnemies = [];
 
 allEnemies.push(e1, e2, e3, e4);
 
